@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
+/* API */
 import { FianzaService } from './Service/FianzaService';
 /* Prime */
 import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { Column } from 'primereact/column';
-import { Panel } from 'primereact/panel';
 import { Card } from 'primereact/card';
 import 'primereact/resources/themes/nova/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -35,7 +35,7 @@ export default class App extends Component{
     this.onAgentChange = this.onAgentChange.bind(this);
     this.onExecutiveChange = this.onExecutiveChange.bind(this);
     this.onOfficeChange = this.onOfficeChange.bind(this);
-
+    // cantidades de dinero
     this.pesos = 1000000;
     this.dolares = parseInt(this.pesos / 21, 10);
     this.euros = parseInt(this.pesos / 23, 10);
@@ -43,7 +43,6 @@ export default class App extends Component{
   
   componentDidMount(){
     this.fianzaService.getAll().then(data => this.setState({fianzas: data}))
-    //this.fianzaService.getAll().then(data => console.log(data))
     fetch(this.fianzaService.baseURL + 'all')
         .then(function(res) {
             return res.json();
@@ -53,7 +52,7 @@ export default class App extends Component{
             })
         });
   }
-
+  // Al cambiar de oficina
   onOfficeChange(e) {
     this.setState({ selectedOffice: e.value });
     this.fianzaService.getByIdOficina(e.value.id).then(data => this.setState({fianzas: data.data}))
@@ -113,7 +112,7 @@ export default class App extends Component{
   onExecutiveChange(e) {
     this.setState({ selectedExecutive: e.value });
   }
-
+  // Función para colorear las celdas de la tabla
   antiguedadBodyTemplate(rowData) {
     if(rowData.color === 'Rojo'){
       return (
@@ -175,7 +174,7 @@ diasVBodyTemplate(rowData) {
     );
   }
 }
-
+// Formatea para el campo de moneda
 formatCurrency = (value) => {
   return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 }
@@ -207,7 +206,7 @@ importeBodyTemplate(rowData) {
           <div class="row my-3">
             <div class="col-md-4 mx-auto">
               <Card title="Pesos">
-                {
+                { // Inserción de Fragmento React
                   this.fillPesosCard()
                 }
               </Card>
@@ -263,7 +262,6 @@ importeBodyTemplate(rowData) {
               </Card>
             </div>
           </div>
-
           <DataTable value={this.state.fianzas}>
             <Column field="fianza" header="Fianza"></Column>
             <Column field="movimiento" header="Movimiento"></Column>
